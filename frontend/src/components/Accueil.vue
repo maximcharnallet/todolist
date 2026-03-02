@@ -1,22 +1,37 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
 
   const newTask = ref ('')
 
-  const tasks = ref<string[]>([])
+  const tasks = ref<{ _id?: string, title: string }[]>([])
+  const API_URL = '/api/tasks'
 
-  function addTask () {
+  async function fetchTasks () {
+    const res = await fetch(API_URL)
+    tasks.value = await res.json()
+  }
+
+  onMounted(fetchTasks)
+
+  async function addTask () {
     if (newTask.value.trim()) {
-      tasks.value.push(newTask.value)
+      const title = newTask.value
+
+      await fetch (API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      })
       newTask.value = ''
+      await fetchTasks()
     }
   }
 
-  function removeTask (index: number) {
-    tasks.value.splice(index, 1)
-  }
+  async function removeTask (id: string) {
+    await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+    await fetchTasks()
+  };
 
-  console.log('tasks :', tasks)
 </script>
 <template>
   <v-layout class="rounded rounded-md border">
@@ -32,12 +47,12 @@
           </template>
         </v-text-field>
         <v-list>
-          <v-list-item v-for="(task, index) in tasks" :key="index" :title="task">
+          <v-list-item v-for="task in tasks" :key="task._id" :title="task.title">
             <template #append>
               <v-btn
                 color="error"
                 variant="text"
-                @click="removeTask(index)"
+                @click="removeTask(task._id!)"
               >Supprimer</v-btn>
             </template>
           </v-list-item>
