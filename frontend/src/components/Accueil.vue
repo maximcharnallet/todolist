@@ -3,7 +3,7 @@
 
   const newTask = ref ('')
 
-  const tasks = ref(['Tâche 1', 'Tâche 2'])
+  const tasks = ref<string[]>([])
 
   function addTask () {
     if (newTask.value.trim()) {
