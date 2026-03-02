@@ -12,11 +12,15 @@
     }
   }
 
+  function removeTask (index: number) {
+    tasks.value.splice(index, 1)
+  }
+
   console.log('tasks :', tasks)
 </script>
 <template>
   <v-layout class="rounded rounded-md border">
-    <v-app-bar title="Mes tâches à faire"></v-app-bar>
+    <v-app-bar title="Mes tâches à faire" />
 
     <v-main class="d-flex align-center justify-center" height="300">
       <v-container>
@@ -28,7 +32,15 @@
           </template>
         </v-text-field>
         <v-list>
-          <v-list-item v-for="task in tasks" :key="task" :title="task" />
+          <v-list-item v-for="(task, index) in tasks" :key="index" :title="task">
+            <template #append>
+              <v-btn
+                color="error"
+                variant="text"
+                @click="removeTask(index)"
+              >Supprimer</v-btn>
+            </template>
+          </v-list-item>
         </v-list>
       </v-container>
     </v-main>
