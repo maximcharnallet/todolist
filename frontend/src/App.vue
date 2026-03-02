@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld />
+      <Accueil />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import Accueil from './components/Accueil.vue'
 </script>
