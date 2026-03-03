@@ -1,11 +1,10 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <v-app>
     <v-main>
-      <Accueil />
+      <router-view />
     </v-main>
   </v-app>
 </template>
-
-<script lang="ts" setup>
-  import Accueil from './components/Accueil.vue'
-</script>
