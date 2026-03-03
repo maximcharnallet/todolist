@@ -9,7 +9,7 @@
   const isError = ref(false)
 
   async function handleSignin () {
-    const res = await fetch('/check_login', {
+    const res = await fetch('/api/check_login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,15 +20,15 @@
       }),
     })
     console.log(res)
-    if (res.status === 403) {
+    if (res.ok) {
+      const data = await res.json()
+      localStorage.setItem('user_token', data.token)
+      router.push('/accueil')
+    } else {
       isError.value = true
       setTimeout(() => {
         isError.value = false
       }, 3000)
-    } else if (res.status === 200) {
-      const data = await res.json()
-      localStorage.setItem('user_token', data.token)
-      router.push('/accueil')
     }
   }
 </script>

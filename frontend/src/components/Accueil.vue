@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
 
+  const token = localStorage.getItem('user_token')
   const newTask = ref ('')
 
   const tasks = ref<{ _id?: string, title: string }[]>([])
   const API_URL = '/api/tasks'
 
   async function fetchTasks () {
-    const res = await fetch(API_URL)
+    const res = await fetch(API_URL, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     tasks.value = await res.json()
   }
 
@@ -19,7 +22,10 @@
 
       await fetch (API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ title }),
       })
       newTask.value = ''
@@ -35,13 +41,13 @@
 </script>
 <template>
   <v-layout class="rounded rounded-md border">
-    <v-app-bar title="Mes tâches à faire" />
+    <v-app-bar title="Voici tes tâches à faire" />
 
-    <v-main class="d-flex align-center justify-center" height="300">
+    <v-main class="d-flex align-center justify-center" height="700">
       <v-container>
-        <v-text-field v-model="newTask" clearable label="Ajouter..." @keydown.enter="addTask">
+        <v-text-field v-model="newTask" clearable label="Ajouter..." @keydown.enter="addTask()">
           <template #append-inner>
-            <v-btn color="primary" variant="text" @click="addTask">
+            <v-btn color="primary" variant="text" @click="addTask()">
               Ajouter
             </v-btn>
           </template>

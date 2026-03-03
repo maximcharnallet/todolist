@@ -10,7 +10,7 @@
   const isError = ref(false)
 
   async function handleRegister () {
-    const res = await fetch('/check_register', {
+    const res = await fetch('/api/check_register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,6 @@
       setTimeout(() => {
         isError.value = false
       }, 3000)
-      router.push('/login')
     }
   }
 

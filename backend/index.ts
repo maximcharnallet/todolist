@@ -2,8 +2,7 @@ import fastify from 'fastify';
 import mongodb from "@fastify/mongodb";
 import fastifyJwt from "@fastify/jwt";
 import bcrypt from "bcrypt";
-import { password } from 'bun';
-
+import cors from '@fastify/cors'
 
 const app = fastify({ logger: true });
 
@@ -14,6 +13,10 @@ app.register(mongodb, {
 
 app.register(fastifyJwt, {
   secret: 'secret'
+});
+
+app.register(cors, {
+  origin: true
 });
 
 //==================== Register =====================
@@ -88,10 +91,15 @@ app.get("/tasks", {onRequest: [(app as any).authenticate]}, async (request, repl
     return tasks;
 });
 
-app.post("/tasks", async (request, reply) => {
+app.post("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
   const { title } = request.body as { title: string }; 
+  const userId = (request.user as any).id;
+  
   const collection = app.mongo.db?.collection("tasks"); 
-  const result = await collection?.insertOne({ title }); 
+  const result = await app.mongo.db?.collection("tasks").insertOne({ 
+    title, 
+    userId, 
+  });
   return result; 
 });
 
