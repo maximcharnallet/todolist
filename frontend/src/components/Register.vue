@@ -1,7 +1,37 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
 
+  const router = useRouter()
   const visible = ref(false)
+  const name = ref('')
+  const password = ref('')
+  const password2 = ref('')
+  const isError = ref(false)
+
+  async function handleRegister () {
+    const res = await fetch('/check_register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name.value,
+        password: password.value,
+        password2: password2.value,
+      }),
+    })
+    if (res.ok) {
+      router.push('/login')
+    } else {
+      isError.value = true
+      setTimeout(() => {
+        isError.value = false
+      }, 3000)
+      router.push('/login')
+    }
+  }
+
 </script>
 
 <template>
@@ -17,6 +47,7 @@
       <div class="text-body-large text-medium-emphasis">Nom</div>
 
       <v-text-field
+        v-model="name"
         density="compact"
         variant="outlined"
       />
@@ -26,9 +57,22 @@
       </div>
 
       <v-text-field
+        v-model="password"
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         density="compact"
-        placeholder="Taper votre mot de passe"
+        :type="visible ? 'text' : 'password'"
+        variant="outlined"
+        @click:append-inner="visible = !visible"
+      />
+
+      <div class="text-body-large text-medium-emphasis d-flex align-center justify-space-between">
+        Confirmer le mot de passe
+      </div>
+
+      <v-text-field
+        v-model="password2"
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        density="compact"
         :type="visible ? 'text' : 'password'"
         variant="outlined"
         @click:append-inner="visible = !visible"
@@ -40,20 +84,15 @@
         color="blue"
         size="large"
         variant="tonal"
+        @click="handleRegister()"
       >
-        Connexion
+        S'inscrire
       </v-btn>
 
-      <v-card-text class="text-center">
-        <a
-          class="text-blue text-decoration-none"
-          href="/register"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          S'enregister <v-icon icon="mdi-chevron-right" />
-        </a>
-      </v-card-text>
+      <v-alert v-if="isError" class="mb-4" type="error" variant="tonal">
+        Identifiants incorrects
+      </v-alert>
+
     </v-card>
   </div>
 </template>

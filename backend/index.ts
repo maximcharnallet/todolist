@@ -1,5 +1,8 @@
 import fastify from 'fastify';
 import mongodb from "@fastify/mongodb";
+import fastifyJwt from "@fastify/jwt";
+import bcrypt from "bcrypt";
+import { password } from 'bun';
 
 
 const app = fastify({ logger: true });
@@ -8,6 +11,42 @@ app.register(mongodb, {
   forceClose: true,
   url: "mongodb://localhost:27017/todolist" 
 });
+
+app.register(fastifyJwt, {
+  secret: 'secret'
+});
+
+//==================== Register =====================
+
+app.post("/check_register", async (request, reply) => {
+  const { name, password, password2 } = request.body as any; 
+  const collection = app.mongo.db?.collection("users");
+
+  const existingUser = await collection?.findOne({ name: name.toLowerCase() })
+
+  if ( password !== password2 ){
+    return reply.code(400).send({ error: "Les mots de passent ne correspondent pas"})
+
+  }if (existingUser) {
+    return reply.code(403).send({ error: "Ce nom existe déja" }); 
+  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const result = await collection?.insertOne({
+  name: name.toLowerCase(),
+  password: hashedPassword
+  })
+
+  console.log("nom :", name)
+  console.log("password :", password)
+  return { success: true, userId: result?.insertedId }; 
+
+  })
+
+
+//==================== Login ====================
+
+
 
 
 app.get("/tasks", async (request, reply) => {

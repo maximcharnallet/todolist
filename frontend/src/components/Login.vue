@@ -57,7 +57,6 @@
       <v-text-field
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         density="compact"
-        placeholder="Taper votre mot de passe"
         required
         :type="visible ? 'text' : 'password'"
         variant="outlined"
