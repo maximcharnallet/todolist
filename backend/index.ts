@@ -18,8 +18,8 @@ app.register(fastifyJwt, {
 
 //==================== Register =====================
 
-app.post("/check_register", async (request, reply) => {
-  const { name, password, password2 } = request.body as any; 
+app.post("/check_register", async (req, reply) => {
+  const { name, password, password2 } = req.body as any; 
   const collection = app.mongo.db?.collection("users");
 
   const existingUser = await collection?.findOne({ name: name.toLowerCase() })
@@ -46,13 +46,44 @@ app.post("/check_register", async (request, reply) => {
 
 //==================== Login ====================
 
+app.post("/check_login", async (req, reply) => {
+  const { name, password } = req.body as any; 
+  const collection = app.mongo.db?.collection("users");
+
+  const user = await collection?.findOne({ name: name.toLowerCase() })
+
+  if (user) {
+    const valid = await bcrypt.compare(password, user.password); 
+    if (valid) {
+      const token = app.jwt.sign({
+        id: user._id,
+        name: user.name
+      });
+
+      return { success: true, token }
+    }
+  }
+  return reply.code(403).send({ error: "Identifiants invalides" });
+});
+
+//====================  Decorate ====================
+
+app.decorate("authenticate", async (req: any, reply: any) => {
+  try {
+    await req.jwtVerify();
+  } catch(err) {
+    reply.send(err);
+  }
+});
 
 
+//===================== Tasks =========================
 
-app.get("/tasks", async (request, reply) => {
+
+app.get("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
 
     const db = app.mongo.db;
-
+    const userId = (request.user as any).id
     const tasks = await db?.collection("tasks").find().toArray();
     return tasks;
 });

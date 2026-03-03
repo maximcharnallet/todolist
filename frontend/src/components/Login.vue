@@ -26,6 +26,8 @@
         isError.value = false
       }, 3000)
     } else if (res.status === 200) {
+      const data = await res.json()
+      localStorage.setItem('user_token', data.token)
       router.push('/accueil')
     }
   }
@@ -55,6 +57,7 @@
       </div>
 
       <v-text-field
+        v-model="password"
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         density="compact"
         required
