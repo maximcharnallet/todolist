@@ -1,7 +1,14 @@
 <script setup lang="ts">
+  import { jwtDecode } from 'jwt-decode'
   import { onMounted, ref } from 'vue'
 
   const token = localStorage.getItem('user_token')
+  const userName = ref('')
+  if (token) {
+    const decoded: any = jwtDecode(token)
+    userName.value = decoded.name
+  }
+
   const newTask = ref ('')
 
   const tasks = ref<{ _id?: string, title: string }[]>([])
@@ -41,7 +48,7 @@
 </script>
 <template>
   <v-layout class="rounded rounded-md border">
-    <v-app-bar title="Voici tes tâches à faire" />
+    <v-app-bar :title="`Bonjour ${userName}, voici tes tâches à faire`" />
 
     <v-main class="d-flex align-center justify-center" height="700">
       <v-container>
