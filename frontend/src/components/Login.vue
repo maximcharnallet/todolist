@@ -1,36 +1,21 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import { useSignin } from "@/composables/useSignin"
+import { signin } from "@/services/auth.service"
 
-  const router = useRouter()
-  const name = ref('')
-  const password = ref('')
-  const visible = ref(false)
-  const isError = ref(false)
+const name = ref("")
+const password = ref("")
+const visible = ref(false)
 
-  async function handleSignin () {
-    const res = await fetch('/api/check_login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name.value,
-        password: password.value,
-      }),
-    })
-    console.log(res)
-    if (res.ok) {
-      const data = await res.json()
-      localStorage.setItem('user_token', data.token)
-      router.push('/accueil')
-    } else {
-      isError.value = true
-      setTimeout(() => {
-        isError.value = false
-      }, 3000)
-    }
-  }
+const { isError, isLoading, doSignin } = useSignin()
+
+async function handleSignin() {
+  doSignin({
+    name: name.value,
+    password: password.value,
+  })
+}
 </script>
 
 <template>
@@ -41,7 +26,11 @@
       max-width="448"
       rounded="lg"
     >
-      <div class="text-body-large font-weight-bold text-medium-emphasis text-center">Se connecter</div>
+      <div
+        class="text-body-large font-weight-bold text-medium-emphasis text-center"
+      >
+        Se connecter
+      </div>
 
       <div class="text-body-large text-medium-emphasis">Nom</div>
 
@@ -52,7 +41,9 @@
         variant="outlined"
       />
 
-      <div class="text-body-large text-medium-emphasis d-flex align-center justify-space-between">
+      <div
+        class="text-body-large text-medium-emphasis d-flex align-center justify-space-between"
+      >
         Mot de passe
       </div>
 
