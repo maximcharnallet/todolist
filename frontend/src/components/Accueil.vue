@@ -8,23 +8,24 @@
     const decoded: any = jwtDecode(token)
     userName.value = decoded.name
   }
-
   const newTask = ref ('')
 
   const tasks = ref<{ _id?: string, title: string }[]>([])
+
   const API_URL = '/api/tasks'
 
   async function fetchTasks () {
     const res = await fetch(API_URL, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    tasks.value = await res.json()
+    const data = await res.json()
+    tasks.value = data.tasks || []
   }
 
   onMounted(fetchTasks)
 
   async function addTask () {
-    if (newTask.value.trim()) {
+    if (newTask.value) {
       const title = newTask.value
 
       await fetch (API_URL, {
@@ -41,7 +42,10 @@
   }
 
   async function removeTask (id: string) {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+    await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
     await fetchTasks()
   };
 
