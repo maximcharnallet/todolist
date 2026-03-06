@@ -3,21 +3,19 @@
   import { onMounted, ref } from 'vue'
   import { useTask } from '@/composables/useTask'
 
-  const { isError, newTask, doAddTask, doDeleteTask } = useTask ()
+  const { tasks, isError, newTask, doAddTask, doGetTask, doDeleteTask } = useTask ()
+
   const token = localStorage.getItem('user_token')
+
   const userName = ref('')
+
   if (token) {
     const decoded: any = jwtDecode(token)
     userName.value = decoded.name
   }
-  const tasks = ref<{ _id?: string, title: string }[]>([])
 
   async function fetchTasks () {
-    const res = await fetch('/api/tasks', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    const data = await res.json()
-    tasks.value = data.tasks || []
+    doGetTask()
   }
 
   onMounted(fetchTasks)
