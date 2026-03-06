@@ -1,34 +1,20 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useRegister } from '@/composables/useRegister'
 
-  const router = useRouter()
   const visible = ref(false)
   const name = ref('')
   const password = ref('')
   const password2 = ref('')
-  const isError = ref(false)
+
+  const { isError, isLoading, doRegister } = useRegister ()
 
   async function handleRegister () {
-    const res = await fetch('/api/check_register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name.value,
-        password: password.value,
-        password2: password2.value,
-      }),
-    })
-    if (res.ok) {
-      router.push('/login')
-    } else {
-      isError.value = true
-      setTimeout(() => {
-        isError.value = false
-      }, 3000)
-    }
+    doRegister(
+      name.value,
+      password.value,
+      password2.value,
+    )
   }
 
 </script>

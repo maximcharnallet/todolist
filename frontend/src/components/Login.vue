@@ -1,35 +1,18 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useSignin } from '@/composables/useSignin'
 
-  const router = useRouter()
   const name = ref('')
   const password = ref('')
   const visible = ref(false)
-  const isError = ref(false)
+
+  const { isError, isLoading, doSignin } = useSignin()
 
   async function handleSignin () {
-    const res = await fetch('/api/check_login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name.value,
-        password: password.value,
-      }),
-    })
-    console.log(res)
-    if (res.ok) {
-      const data = await res.json()
-      localStorage.setItem('user_token', data.token)
-      router.push('/accueil')
-    } else {
-      isError.value = true
-      setTimeout(() => {
-        isError.value = false
-      }, 3000)
-    }
+    doSignin(
+      name.value,
+      password.value,
+    )
   }
 </script>
 
