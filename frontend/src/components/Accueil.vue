@@ -15,19 +15,19 @@
   }
 
   async function fetchTasks () {
-    doGetTask()
+    await doGetTask()
   }
 
   onMounted(fetchTasks)
 
   async function handleAddTask () {
-    doAddTask(newTask.value)
+    await doAddTask(newTask.value)
     newTask.value = ''
     await doGetTask()
   }
 
-  async function handleDeleteTask (_id: string) {
-    doDeleteTask(_id)
+  async function handleDeleteTask (id: string) {
+    await doDeleteTask(id)
     await doGetTask()
   };
 

@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { Collection } from "mongodb"; 
 import type { Task } from "../models/task.model";
-import { ObjectId } from "@fastify/mongodb";
+import { ObjectId } from "mongodb";
 
 export class TaskRepository { 
     private collection: Collection<Task> | undefined
@@ -22,9 +22,11 @@ export class TaskRepository {
 
      }
 
-    public async deleteTask(id: string): Promise<number | undefined> {
+    public async deleteTask(_id: string): Promise<number | undefined> {
+        if (!ObjectId.isValid(_id)) return 0;
+        
         const result = await this.collection?.deleteOne({
-            _id: new ObjectId(id)
+            _id: new ObjectId(_id)
         })
         return result?.deletedCount
     }

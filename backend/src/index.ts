@@ -1,13 +1,7 @@
 import fastify from 'fastify';
 import mongodb from "@fastify/mongodb";
 import fastifyJwt from "@fastify/jwt";
-import bcrypt from "bcrypt";
 import cors from '@fastify/cors';
-import { UserRepository } from './repositories/user.repository';
-import type { User } from './models/user.model';
-import { RegisterUserUseCase } from './usecases/user.register.handler';
-import { BadRequestError } from './errors/bad-request.error';
-import { ConflictError } from './errors/conflict.error';
 import { registerAuthController } from './controllers/auth.http';
 import { taskController } from './controllers/task.http';
 

@@ -4,8 +4,7 @@ export async function deleteTask (_id: string) {
   const res = await fetch (`/api/tasks/${_id}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
   if (!res.ok) {

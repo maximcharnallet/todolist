@@ -33,7 +33,7 @@ export function useTask () {
 
   async function doDeleteTask (_id: string) {
     try {
-      await deleteTask(_id)
+      return await deleteTask(_id)
     } catch {
       isError.value = true
       setTimeout(() => {

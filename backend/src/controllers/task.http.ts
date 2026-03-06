@@ -11,7 +11,7 @@ export function taskController(app: FastifyInstance) {
     const taskRepository = new TaskRepository(app)
 
     app.get("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
-        const userId = (request.user as any).id
+        const userId = (request.user as any)._id
         console.log("ID cherché :", userId);
         const handler = new GetTaskUseCase(taskRepository)
 
@@ -39,13 +39,13 @@ export function taskController(app: FastifyInstance) {
         }
     })
 
-    app.delete("/tasks/:id", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
-        const { id } = request.params as { id: string };
+    app.delete("/tasks/:_id", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
+        const { _id } = request.params as { _id: string };
         
         const handler = new DeleteTaskUseCase(taskRepository)
 
         try{
-            const result = await handler.execute(id)
+            const result = await handler.execute(_id)
             return { success: true };
         } catch(e) {
             if (e instanceof NotFoundError){
