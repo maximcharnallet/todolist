@@ -1,21 +1,19 @@
 <script setup lang="ts">
   import { jwtDecode } from 'jwt-decode'
   import { onMounted, ref } from 'vue'
+  import { useTask } from '@/composables/useTask'
 
+  const { isError, newTask, doAddTask, doDeleteTask } = useTask ()
   const token = localStorage.getItem('user_token')
   const userName = ref('')
   if (token) {
     const decoded: any = jwtDecode(token)
     userName.value = decoded.name
   }
-  const newTask = ref ('')
-
   const tasks = ref<{ _id?: string, title: string }[]>([])
 
-  const API_URL = '/api/tasks'
-
   async function fetchTasks () {
-    const res = await fetch(API_URL, {
+    const res = await fetch('/api/tasks', {
       headers: { Authorization: `Bearer ${token}` },
     })
     const data = await res.json()
@@ -24,28 +22,14 @@
 
   onMounted(fetchTasks)
 
-  async function addTask () {
-    if (newTask.value) {
-      const title = newTask.value
-
-      await fetch (API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title }),
-      })
-      newTask.value = ''
-      await fetchTasks()
-    }
+  async function handleAddTask () {
+    doAddTask(newTask.value)
+    newTask.value = ''
+    await fetchTasks()
   }
 
-  async function removeTask (id: string) {
-    await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  async function handleDeleteTask (id: string) {
+    doDeleteTask(id)
     await fetchTasks()
   };
 
@@ -56,9 +40,9 @@
 
     <v-main class="d-flex align-center justify-center" height="700">
       <v-container>
-        <v-text-field v-model="newTask" clearable label="Ajouter..." @keydown.enter="addTask()">
+        <v-text-field v-model="newTask" clearable label="Ajouter..." @keydown.enter="handleAddTask()">
           <template #append-inner>
-            <v-btn color="primary" variant="text" @click="addTask()">
+            <v-btn color="primary" variant="text" @click="handleAddTask()">
               Ajouter
             </v-btn>
           </template>
@@ -69,7 +53,7 @@
               <v-btn
                 color="error"
                 variant="text"
-                @click="removeTask(task._id!)"
+                @click="handleDeleteTask(task._id!)"
               >Supprimer</v-btn>
             </template>
           </v-list-item>
