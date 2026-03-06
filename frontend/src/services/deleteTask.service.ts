@@ -1,11 +1,16 @@
-const token = localStorage.getItem('user_token')
+export async function deleteTask (_id: string) {
+  const token = localStorage.getItem('user_token')
 
-export async function deleteTask (id: string) {
-  await fetch (`/api/tasks/${id}`, {
+  const res = await fetch (`/api/tasks/${_id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
   })
+  if (!res.ok) {
+    throw new Error(`Erreur suppression : ${res.status}`)
+  }
+
+  return await res.json()
 }

@@ -23,12 +23,12 @@
   async function handleAddTask () {
     doAddTask(newTask.value)
     newTask.value = ''
-    await fetchTasks()
+    await doGetTask()
   }
 
-  async function handleDeleteTask (id: string) {
-    doDeleteTask(id)
-    await fetchTasks()
+  async function handleDeleteTask (_id: string) {
+    doDeleteTask(_id)
+    await doGetTask()
   };
 
 </script>
