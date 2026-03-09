@@ -1,34 +1,36 @@
 <script setup lang="ts">
   import { jwtDecode } from 'jwt-decode'
+  import { storeToRefs } from 'pinia'
   import { onMounted, ref } from 'vue'
-  import { useTask } from '@/composables/useTask'
+  import { taskStore } from '@/store/task.store'
 
-  const { tasks, isError, newTask, doAddTask, doGetTask, doDeleteTask } = useTask ()
-
-  const token = localStorage.getItem('user_token')
+  const newTask = ref ('')
 
   const userName = ref('')
+
+  const store = taskStore()
+
+  const { tasks, isError } = storeToRefs(store)
+
+  const token = localStorage.getItem('user_token')
 
   if (token) {
     const decoded: any = jwtDecode(token)
     userName.value = decoded.name
   }
 
-  async function fetchTasks () {
-    await doGetTask()
-  }
-
-  onMounted(fetchTasks)
+  onMounted(() => {
+    store.$reset()
+    store.doGetTask()
+  })
 
   async function handleAddTask () {
-    await doAddTask(newTask.value)
+    await store.doAddTask(newTask.value)
     newTask.value = ''
-    await doGetTask()
   }
 
   async function handleDeleteTask (id: string) {
-    await doDeleteTask(id)
-    await doGetTask()
+    await store.doDeleteTask(id)
   };
 
 </script>

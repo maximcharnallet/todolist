@@ -11,7 +11,7 @@ export function taskController(app: FastifyInstance) {
     const taskRepository = new TaskRepository(app)
 
     app.get("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
-        const userId = (request.user as any)._id
+        const userId = (request.user as any).id
         console.log("ID cherché :", userId);
         const handler = new GetTaskUseCase(taskRepository)
 

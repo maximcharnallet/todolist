@@ -23,7 +23,8 @@ app.register(cors, {
 
 app.decorate("authenticate", async (req: any, reply: any) => {
   try {
-    await req.jwtVerify();
+    const authenticatedUser = await req.jwtVerify();
+    console.log("authenticatedUser :", authenticatedUser)
   } catch(err) {
     reply.send(err);
   }
