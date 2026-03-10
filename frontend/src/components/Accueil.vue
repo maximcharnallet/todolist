@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import { jwtDecode } from 'jwt-decode'
-  import { storeToRefs } from 'pinia'
-  import { onMounted, ref } from 'vue'
+  import { ref } from 'vue'
   import { useLogout } from '@/composables/useLogout'
-  import { taskStore } from '@/store/task.store'
   import Task from './Task.vue'
 
   const userName = ref('')
@@ -24,7 +22,7 @@
 </script>
 <template>
   <v-layout class="rounded rounded-md border">
-    <v-app-bar :title="`Bonjour ${userName}`">
+    <v-app-bar :title="`Bonjour ${userName}, voici vos tâches à faire`">
       <template #append>
         <v-btn color="primary" variant="text" @click="handleLogout()">
           Déconnecter

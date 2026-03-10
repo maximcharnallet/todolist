@@ -3,27 +3,33 @@
   import { ref, watch } from 'vue'
   import { taskStore } from '@/store/task.store'
 
+  const props = defineProps<{
+    modelValue: boolean
+    task: { _id?: string, title: string } | null
+  }>()
+
   const store = taskStore()
 
   const { tasks, isError } = storeToRefs(store)
 
-  const props = defineProps <{
-    modelValue: boolean
-    task: any
-  }>()
-
-  const localTask = ref({ ...props.task })
-
-  watch(() => props.task, newVal => {
-    localTask.value = { ...newVal }
-  }, { deep: true })
-
   const emit = defineEmits(['update:modelValue', 'save'])
+
+  const localTask = ref('')
+
+  watch(() => props.task, newTask => {
+    localTask.value = newTask ? newTask.title : ''
+  }, { immediate: true })
 
   function close () {
     emit('update:modelValue', false)
   }
 
+  async function handleUpdate () {
+    if (props.task && props.task._id) {
+      await store.doEditTask(props.task._id, localTask.value)
+      close()
+    }
+  }
 </script>
 <template>
   <v-dialog
@@ -41,7 +47,7 @@
             md="12"
             sm="12"
           >
-            <v-text-field v-if="task" v-model="localTask.title" />
+            <v-text-field v-if="tasks" v-model="localTask" @keydown.enter="handleUpdate" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -56,7 +62,7 @@
           color="primary"
           text="Modifier"
           variant="tonal"
-          @click="close"
+          @click="handleUpdate"
         />
       </v-card-actions>
     </v-card>
