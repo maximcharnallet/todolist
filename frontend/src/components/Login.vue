@@ -68,8 +68,6 @@
         <a
           class="text-blue text-decoration-none"
           href="/register"
-          rel="noopener noreferrer"
-          target="_blank"
         >
           S'enregister <v-icon icon="mdi-chevron-right" />
         </a>

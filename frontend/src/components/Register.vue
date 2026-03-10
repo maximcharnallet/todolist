@@ -7,7 +7,7 @@
   const password = ref('')
   const password2 = ref('')
 
-  const { isError, isLoading, doRegister } = useRegister ()
+  const { isError, errorMessage, isLoading, doRegister } = useRegister ()
 
   async function handleRegister () {
     doRegister(
@@ -75,7 +75,7 @@
       </v-btn>
 
       <v-alert v-if="isError" class="mb-4" type="error" variant="tonal">
-        Identifiants incorrects
+        {{ errorMessage }}
       </v-alert>
 
     </v-card>

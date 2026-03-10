@@ -10,8 +10,9 @@ export async function register (name: string, password: string, password2: strin
       password2,
     }),
   })
-  if (res.ok) {
-    const data = await res.json()
-    return data
+  const data = await res.json()
+  if (!res.ok) {
+    throw new Error(data.error || 'Une erreur est survenue')
   }
+  return data
 }

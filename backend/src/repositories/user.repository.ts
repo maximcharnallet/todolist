@@ -19,7 +19,7 @@ export class UserRepository {
         name: string,
     ): Promise<(User & { _id:  ObjectId }) | null> {
         const existingUser = await this.collection?.findOne({
-            name:name.toLocaleLowerCase(),
+            name:name,
         })
         if (existingUser) return existingUser
         return null

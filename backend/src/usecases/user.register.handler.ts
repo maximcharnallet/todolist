@@ -12,9 +12,16 @@ export class RegisterUserUseCase {
     }
 
     public async execute(name: string, password1: string, password2: string){
+        if (!name) {
+            throw new BadRequestError("Remplir votre nom");
+        }
+        if (!password1 || !password2) {
+        throw new BadRequestError("Remplir un mot de passe");
+        }
         if (password1 !== password2) {
             throw new BadRequestError("Les mots de passent ne correspondent pas")
         }
+
         const existingUser = await this.userRepository.getUser(name)
 
         if (existingUser) {
