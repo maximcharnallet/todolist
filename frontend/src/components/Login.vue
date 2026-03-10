@@ -6,7 +6,7 @@
   const password = ref('')
   const visible = ref(false)
 
-  const { isError, isLoading, doSignin } = useSignin()
+  const { isError, errorMessage, isLoading, doSignin } = useSignin()
 
   async function handleSignin () {
     doSignin(
@@ -61,7 +61,7 @@
       </v-btn>
 
       <v-alert v-if="isError" class="mb-4" type="error" variant="tonal">
-        Identifiants incorrects
+        {{ errorMessage }}
       </v-alert>
 
       <v-card-text class="text-center">

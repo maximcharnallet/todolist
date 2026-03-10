@@ -5,18 +5,22 @@ import { signin } from '@/services/auth.service'
 export function useSignin () {
   const router = useRouter()
   const isError = ref(false)
+  const errorMessage = ref('')
   const isLoading = ref(false)
 
   async function doSignin (name: string, password: string) {
+    if (!name.trim() || !password.trim()) {
+      isError.value = true
+      errorMessage.value = 'Veuillez remplir tous les champs'
+      return
+    }
     isLoading.value = true
     try {
       await signin(name, password)
       router.push('/accueil')
-    } catch {
+    } catch (error: any) {
       isError.value = true
-      setTimeout(() => {
-        isError.value = false
-      }, 3000)
+      errorMessage.value = error.message
     } finally {
       isLoading.value = false
     }
@@ -24,6 +28,7 @@ export function useSignin () {
   return {
     doSignin,
     isError,
+    errorMessage,
     isLoading,
   }
 }

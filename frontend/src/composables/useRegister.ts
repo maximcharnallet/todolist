@@ -21,9 +21,6 @@ export function useRegister () {
     } catch (error: any) {
       isError.value = true
       errorMessage.value = error.message
-      setTimeout(() => {
-        isError.value = false
-      }, 3000)
     } finally {
       isLoading.value = false
     }
