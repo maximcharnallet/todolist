@@ -7,8 +7,10 @@ import { fetchTasks } from '@/services/getTask.service'
 export const taskStore = defineStore('task', () => {
   const tasks = ref<{ _id?: string, title: string }[]>([])
   const isError = ref(false)
+  const isLoading = ref(false)
 
   async function doGetTask () {
+    isLoading.value = true
     try {
       const data = await fetchTasks()
       tasks.value = data.tasks || []
@@ -17,6 +19,8 @@ export const taskStore = defineStore('task', () => {
       setTimeout(() => {
         isError.value = false
       }, 3000)
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -34,7 +38,7 @@ export const taskStore = defineStore('task', () => {
 
   async function doDeleteTask (_id: string) {
     try {
-      return await deleteTask(_id)
+      await deleteTask(_id)
       await doGetTask()
     } catch {
       isError.value = true
@@ -48,5 +52,5 @@ export const taskStore = defineStore('task', () => {
     tasks.value = []
   }
 
-  return { tasks, isError, doGetTask, doAddTask, doDeleteTask, $reset }
+  return { tasks, isError, isLoading, doGetTask, doAddTask, doDeleteTask, $reset }
 })

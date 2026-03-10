@@ -1,6 +1,5 @@
-const token = localStorage.getItem('user_token')
-
 export async function fetchTasks () {
+  const token = localStorage.getItem('user_token')
   const res = await fetch('/api/tasks', {
     headers: { Authorization: `Bearer ${token}` },
   })

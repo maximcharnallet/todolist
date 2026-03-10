@@ -11,6 +11,7 @@
 
   onMounted(() => {
     store.doGetTask()
+    console.log('onMounted :', onMounted)
   })
 
   async function handleAddTask () {
