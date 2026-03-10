@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { addTask } from '@/services/addTask.service'
 import { deleteTask } from '@/services/deleteTask.service'
+import { editTask } from '@/services/editTask.service'
 import { fetchTasks } from '@/services/getTask.service'
 
 export const taskStore = defineStore('task', () => {
@@ -48,9 +49,21 @@ export const taskStore = defineStore('task', () => {
     }
   }
 
+  async function doEditTask (_id: string, task: string) {
+    try {
+      await editTask(_id, task)
+      await doGetTask()
+    } catch {
+      isError.value = true
+      setTimeout(() => {
+        isError.value = false
+      }, 3000)
+    }
+  }
+
   function $reset () {
     tasks.value = []
   }
 
-  return { tasks, isError, isLoading, doGetTask, doAddTask, doDeleteTask, $reset }
+  return { tasks, isError, isLoading, doGetTask, doAddTask, doDeleteTask, doEditTask, $reset }
 })

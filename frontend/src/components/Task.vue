@@ -2,12 +2,16 @@
   import { storeToRefs } from 'pinia'
   import { onMounted, ref } from 'vue'
   import { taskStore } from '@/store/task.store'
+  import Edit from './Edit.vue'
 
   const newTask = ref ('')
 
   const store = taskStore()
 
   const { tasks, isError } = storeToRefs(store)
+
+  const dialog = ref(false)
+  const selectedTask = ref<any>(null)
 
   onMounted(() => {
     store.doGetTask()
@@ -22,6 +26,12 @@
   async function handleDeleteTask (id: string) {
     await store.doDeleteTask(id)
   };
+
+  async function openEditDialog (task: any) {
+    selectedTask.value = { ...task }
+    dialog.value = true
+    return
+  }
 
 </script>
 <template>
@@ -38,13 +48,24 @@
         <v-list-item v-for="task in tasks" :key="task._id" :title="task.title">
           <template #append>
             <v-btn
+              prepend-icon="mdi-pencil"
+              text="Modifier"
+              variant="tonal"
+              @click="openEditDialog(task)"
+            />
+            <v-btn
               color="error"
+              icon="mdi-delete"
               variant="text"
               @click="handleDeleteTask(task._id!)"
-            >Supprimer</v-btn>
+            />
           </template>
         </v-list-item>
       </v-list>
+      <Edit
+        v-model="dialog"
+        :task="selectedTask"
+      />
     </v-container>
   </v-main>
 
