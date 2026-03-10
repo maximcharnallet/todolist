@@ -9,10 +9,13 @@ export async function signin (name: string, password: string) {
       password,
     }),
   })
+
+  const data = await res.json()
+
   if (res.ok) {
-    const data = await res.json()
     localStorage.setItem('user_token', data.token)
+    return data
   } else {
-    throw new Error('Erreur de connexion')
+    throw new Error(data.error || 'Erreur de connexion')
   }
 }

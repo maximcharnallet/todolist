@@ -9,6 +9,7 @@ export function useSignin () {
   const isLoading = ref(false)
 
   async function doSignin (name: string, password: string) {
+    isError.value = false
     if (!name.trim() || !password.trim()) {
       isError.value = true
       errorMessage.value = 'Veuillez remplir tous les champs'

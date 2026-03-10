@@ -4,7 +4,6 @@ import { BadRequestError } from "../errors/bad-request.error";
 import { ConflictError } from "../errors/conflict.error";
 import { NotFoundError } from "../errors/not-found.error";
 import { NotAuthorizedError } from "../errors/not-authorized.error";
-import type { User } from "../models/user.model";
 import type { UserRepository } from "../repositories/user.repository";
 
 export class LoginUserUseCase {
