@@ -10,7 +10,22 @@ import { NotFoundError } from "../errors/not-found.error"
 export function taskController(app: FastifyInstance) {
     const taskRepository = new TaskRepository(app)
 
-    app.get("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
+    app.get("/tasks", {
+      onRequest: [(app as any).authenticate],
+      schema: {
+        tags: ['Tasks'],
+        security: [{ bearerAuth: [] }], 
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              tasks: { type: 'array', items: { type: 'object', additionalProperties: true } }
+            }
+          }
+        }
+      }
+    }, async (request, reply) => {
         const userId = (request.user as any).id
         console.log("ID cherché :", userId);
         const handler = new GetTaskUseCase(taskRepository)
@@ -20,7 +35,38 @@ export function taskController(app: FastifyInstance) {
         return { success: true, tasks}
     })
 
-    app.post("/tasks", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
+    app.post("/tasks", {
+      onRequest: [(app as any).authenticate],
+      schema: {
+        tags: ['Tasks'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['title'],
+          properties: {
+            title: { type: 'string' }
+          }
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              task: { type: 'object', items: { type: 'object', additionalProperties: true } }
+            }
+          },
+          403: {
+            type: 'object',
+            properties: { error: { type: 'string' } }
+          },
+          400: {
+            type: 'object',
+            properties: { error: { type: 'string' } }
+          },
+        }
+
+      }
+    }, async (request, reply) => {
         const { title } = request.body as { title: string};
         const userId = (request.user as any).id
 
@@ -39,7 +85,35 @@ export function taskController(app: FastifyInstance) {
         }
     })
 
-    app.delete("/tasks/:_id", {onRequest: [(app as any).authenticate]}, async (request, reply) => {
+    app.delete("/tasks/:_id", {
+      onRequest: [(app as any).authenticate],
+      schema: {
+        tags: ['Tasks'],
+        security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string', description: 'ID de la tâche' }
+          }
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+            }
+          },
+          404: {
+            type: 'object',
+            properties: { error: { type: 'string' } }
+          },
+          400: {
+            type: 'object',
+            properties: { error: { type: 'string' } }
+          },
+        }
+      }
+    }, async (request, reply) => {
         const { _id } = request.params as { _id: string };
         
         const handler = new DeleteTaskUseCase(taskRepository)

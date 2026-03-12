@@ -2,10 +2,41 @@ import fastify from 'fastify';
 import mongodb from "@fastify/mongodb";
 import fastifyJwt from "@fastify/jwt";
 import cors from '@fastify/cors';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
+import fp from 'fastify-plugin';
 import { registerAuthController } from './controllers/auth.http';
 import { taskController } from './controllers/task.http';
 
 const app = fastify({ logger: true });
+
+app.register(swagger, {
+  openapi: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Todolist API',
+      description: "Documentation de l'API Todolist avec Fastify",
+      version: '1.0.0'
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    }
+  }
+});
+
+app.register(swaggerUi, {
+  routePrefix: '/docs',
+  uiConfig: {
+    docExpansion: 'list',
+    deepLinking: true
+  }
+});
 
 app.register(mongodb, {
   forceClose: true,
@@ -30,10 +61,10 @@ app.decorate("authenticate", async (req: any, reply: any) => {
   }
 });
 
-app.register(async (instance) => {
+app.register(fp(async (instance) => {
   registerAuthController(instance)
   taskController(instance)
-})
+}))
 
 
 
