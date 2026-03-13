@@ -2,8 +2,9 @@ import type { FastifyInstance } from "fastify";
 import { Collection } from "mongodb"; 
 import type { Task } from "../models/task.model";
 import { ObjectId } from "mongodb";
+import type { TaskRepository } from "../ports/task.repository";
 
-export class TaskRepository { 
+export class TaskRepositoryImpl implements TaskRepository { 
     private collection: Collection<Task> | undefined
 
     constructor(app: FastifyInstance) {

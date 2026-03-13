@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify"
-import { TaskRepository } from "../repositories/task.repository"
+import { TaskRepositoryImpl } from "../repositories/task.repository"
+import type { TaskRepository } from "../ports/task.repository"
 import { GetTaskUseCase } from "../usecases/task.get.handler"
 import { CreateTaskUseCase } from "../usecases/task.create.handler"
 import { ConflictError } from "../errors/conflict.error"
@@ -8,7 +9,7 @@ import { NotFoundError } from "../errors/not-found.error"
 
 
 export function taskController(app: FastifyInstance) {
-    const taskRepository = new TaskRepository(app)
+    const taskRepository : TaskRepository = new TaskRepositoryImpl(app)
 
     app.get("/tasks", {
       onRequest: [(app as any).authenticate],

@@ -1,9 +1,8 @@
 import { NotFoundError } from "../errors/not-found.error";
-import type { TaskRepository } from "../repositories/task.repository";
+import type { TaskRepository } from "../ports/task.repository";
 
 export class DeleteTaskUseCase {
     private taskRepository : TaskRepository
-
     constructor(taskRepository: TaskRepository) {
         this.taskRepository = taskRepository
     }
