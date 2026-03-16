@@ -2,7 +2,7 @@
   import { jwtDecode } from 'jwt-decode'
   import { ref } from 'vue'
   import { useLogout } from '@/composables/useLogout'
-  import Task from './Task.vue'
+  import Task from './components.task/Task.vue'
 
   const userName = ref('')
 
@@ -21,14 +21,24 @@
 
 </script>
 <template>
-  <v-layout class="rounded rounded-md border">
-    <v-app-bar :title="`Bonjour ${userName}, voici vos tâches à faire`">
-      <template #append>
-        <v-btn color="primary" variant="text" @click="handleLogout()">
-          Déconnecter
-        </v-btn>
-      </template>
-    </v-app-bar>
-    <task />
-  </v-layout>
+  <v-app>
+    <v-layout class="rounded rounded-md border">
+      <v-app-bar :title="`Bonjour ${userName}`">
+        <template #append>
+          <v-btn color="primary" variant="text" @click="handleLogout()">
+            Déconnecter
+          </v-btn>
+        </template>
+      </v-app-bar>
+      <v-navigation-drawer>
+        <v-list nav>
+          <v-list-item link title="Tâches" to="/accueil/task" />
+          <v-list-item link title="Main courante" to="/accueil/logbook" />
+        </v-list>
+      </v-navigation-drawer>
+      <v-main>
+        <router-view />
+      </v-main>
+    </v-layout>
+  </v-app>
 </template>
