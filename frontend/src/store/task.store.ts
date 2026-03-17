@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { addTask } from '@/services/addTask.service'
-import { deleteTask } from '@/services/deleteTask.service'
-import { editTask } from '@/services/editTask.service'
-import { fetchTasks } from '@/services/getTask.service'
+import { addTask } from '@/services/task.services/addTask.service'
+import { deleteTask } from '@/services/task.services/deleteTask.service'
+import { editTask } from '@/services/task.services/editTask.service'
+import { fetchTasks } from '@/services/task.services/getTask.service'
 
 export const taskStore = defineStore('task', () => {
   const tasks = ref<{ _id?: string, title: string }[]>([])

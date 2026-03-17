@@ -26,4 +26,4 @@ export class LogbookRepositoryImpl implements LogbookRepository {
             .sort({ date: -1 }) 
             .toArray();
     }
-}
+} 

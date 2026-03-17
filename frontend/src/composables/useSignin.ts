@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { signin } from '@/services/auth.service'
+import { signin } from '@/services/auth.services/auth.service'
 
 export function useSignin () {
   const router = useRouter()

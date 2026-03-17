@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { register } from '@/services/register.services'
+import { register } from '@/services/auth.services/register.services'
 
 export function useRegister () {
   const router = useRouter()

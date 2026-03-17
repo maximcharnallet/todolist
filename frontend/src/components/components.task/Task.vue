@@ -36,7 +36,7 @@
 </script>
 <template>
   <v-container>
-    <h1> Vos tâches à faire </h1>
+    <h1 class="text-center pb-4"> Vos tâches à faire </h1>
     <v-text-field v-model="newTask" clearable label="Ajouter..." @keydown.enter="handleAddTask()">
       <template #append-inner>
         <v-btn color="primary" variant="text" @click="handleAddTask()">
