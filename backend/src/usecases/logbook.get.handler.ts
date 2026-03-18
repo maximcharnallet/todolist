@@ -7,7 +7,7 @@ export class GetLogUsecase {
         this.logbookRepository = logbookRepository
     }
 
-    public async execute(userId: string){
-        return await this.logbookRepository.getLogsByUserId(userId)
+    public async execute(){
+        return await this.logbookRepository.getLogs()
     }
 }

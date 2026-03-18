@@ -77,7 +77,7 @@
               </template>
               <v-card class="elevation-1">
                 <v-card-title class="text-subtitle-1">
-                  <small>{{ userName }}</small>
+                  <small>{{ log.userId }}</small>
                 </v-card-title>
 
                 <v-card-text class="text-body-2">

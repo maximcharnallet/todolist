@@ -19,11 +19,11 @@ export class LogbookRepositoryImpl implements LogbookRepository {
         return result.insertedId;
     }
 
-    public async getLogsByUserId(userId: string): Promise<Logbook[]> {
+    public async getLogs(): Promise<Logbook[]> {
         if (!this.collection) throw new Error("Base de données non connectée");
         return await this.collection
-            .find({ userId: userId })
+            .find()
             .sort({ date: -1 }) 
-            .toArray();
+            .toArray() as Logbook[];
     }
 } 

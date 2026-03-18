@@ -4,6 +4,7 @@ import type { LogbookRepository } from "../ports/logbook.repository"
 import type { Logbook } from "../models/logbook.model"
 import { CreateLogUsecase } from "../usecases/logbook.create.handler"
 import { ConflictError } from "../errors/conflict.error"
+import { GetLogUsecase } from "../usecases/logbook.get.handler"
 
 
 
@@ -13,26 +14,29 @@ export function logbookController (app: FastifyInstance) {
   interface JwtPayload {
     id: string;
   }
-  // app.get("/logbook", {
-  //   onRequest: [(app as any).authenticate],
-  //   schema: {
-  //     tags: ['Logbook'],
-  //     security: [{ bearerAuth: [] }], 
-  //     response: {
-  //       200: {
-  //         type: 'object',
-  //         properties: {
-  //           success: { type: 'boolean' },
-  //           Logbook: { type: 'array', items: { type: 'object', additionalProperties: true } }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, async (request, reply) => {
+  app.get("/logbook", {
+    onRequest: [(app as any).authenticate],
+    schema: {
+      tags: ['Logbook'],
+      security: [{ bearerAuth: [] }], 
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            Logbook: { type: 'array', items: { type: 'object', additionalProperties: true } }
+          }
+        }
+      }
+    }
+  }, async (request, reply) => {
+    const handler = new GetLogUsecase(logbookRepository)
+    const logs = await handler.execute()
+    console.log("Logbook :", logs)
+    return { success: true, Logbook: logs}
 
-  // }
+  })
 
-  // )
 
   app.post("/logbook", {
     onRequest: [(app as any).authenticate],
