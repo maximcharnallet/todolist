@@ -41,47 +41,52 @@ export function logbookController (app: FastifyInstance) {
 
   app.post("/logbook", {
     onRequest: [(app as any).authenticate],
-    // schema: {
-    //   tags: ['Logbook'],
-    //   security: [{ bearerAuth: [] }],
-    //   body: {
-    //     type: 'object',
-    //     required: ['title'],
-    //     properties: {
-    //       title: { type: 'string' }
-    //     }
-    //   },
-    //   response: {
-    //     200: {
-    //       type: 'object',
-    //       properties: {
-    //         success: { type: 'boolean' },
-    //         task: { type: 'object', items: { type: 'object', additionalProperties: true } }
-    //       }
-    //     },
-    //     403: {
-    //       type: 'object',
-    //       properties: { error: { type: 'string' } }
-    //     },
-    //     400: {
-    //       type: 'object',
-    //       properties: { error: { type: 'string' } }
-    //     },
-    //   }
+    schema: {
+      tags: ['Logbook'],
+      security: [{ bearerAuth: [] }],
+      body: {
+        type: 'object',
+        required: ['logbook'],
+        properties: {
+          logbook: {
+            type:'objet',
+            required: ['description', 'date'],
+            properties: {
+            description: { type: 'string' },
+            date: { type: 'string', format: 'date-time' } 
+            }
+          }
+        }
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            newLog: { type: 'object', additionalProperties: true },
+          }
+        },
+        403: {
+          type: 'object',
+          properties: { error: { type: 'string' } }
+        },
+        400: {
+          type: 'object',
+          properties: { error: { type: 'string' } }
+        },
+      }
 
-    // }
+    }
   }, async (request, reply) => {
-      console.log("request.body :", request.body)
-      console.log("request.user :", request.user)
+      let newLog
       const user = (request.user as JwtPayload)
       console.log("user JWT payload :", user)
       const userId = user.name
       const { logbook } = request.body as { logbook: Logbook};
-
       const handler = new CreateLogUsecase(logbookRepository)
       
       try {
-          const newLog = await handler.execute(userId, logbook.description, logbook.date)
+          newLog = await handler.execute(userId, logbook.description, logbook.date)
           return { success: true, newLog }
       } catch (e) {
           if (e instanceof ConflictError){
