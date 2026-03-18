@@ -1,5 +1,5 @@
-import { addTask } from './task.services/addTask.service'
-import { deleteTask } from './task.services/deleteTask.service'
+import { addTask } from './addTask.service'
+import { deleteTask } from './deleteTask.service'
 
 export async function editTask (_id: string, task: string) {
   await deleteTask(_id)

@@ -10,7 +10,7 @@ export class LogbookRepositoryImpl implements LogbookRepository {
         this.collection = app.mongo.db?.collection<Logbook>("Logbooks")
     }
 
-    public async createLogbook(logbook: Logbook): Promise<any> {
+    public async createLog(logbook: Logbook): Promise<any> {
         if (!this.collection) throw new Error("Base de données non connectée");
         const result = await this.collection.insertOne({
             ...logbook,
