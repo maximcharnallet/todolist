@@ -7,6 +7,7 @@ import swaggerUi from '@fastify/swagger-ui';
 import fp from 'fastify-plugin';
 import { registerAuthController } from './controllers/auth.http';
 import { taskController } from './controllers/task.http';
+import { logbookController } from './controllers/logbook.http';
 
 const app = fastify({ logger: true });
 
@@ -64,6 +65,7 @@ app.decorate("authenticate", async (req: any, reply: any) => {
 app.register(fp(async (instance) => {
   registerAuthController(instance)
   taskController(instance)
+  logbookController(instance)
 }))
 
 

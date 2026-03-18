@@ -9,8 +9,15 @@ export const logbookStore = defineStore('logbook', () => {
     date: string
     // type: string
     // severity: string
-
   }[]>([])
+  const newLog = ref({
+    description: '',
+    date: '',
+    time: '',
+    // type: '',
+    // severity: '',
+  })
+
   const isLoading = ref(false)
   const isError = ref(false)
 
@@ -28,13 +35,6 @@ export const logbookStore = defineStore('logbook', () => {
       isLoading.value = false
     }
   }
-  const newLog = ref({
-    description: '',
-    date: '',
-    time: '',
-    // type: '',
-    // severity: '',
-  })
 
   async function doAddLog (entry: {
     description: string
@@ -51,6 +51,13 @@ export const logbookStore = defineStore('logbook', () => {
         // severity: entry.severity,
       })
       await doGetLog()
+      newLog.value = {
+        description: '',
+        date: '',
+        time: '',
+        // type: '',
+        // severity: '',
+      }
     } catch {
       isError.value = true
       setTimeout(() => {
