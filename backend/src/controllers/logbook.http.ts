@@ -30,7 +30,7 @@ export function logbookController (app: FastifyInstance) {
         }
       }
     }
-  }, async (request, reply) => {
+  }, async () => {
     const handler = new GetLogUsecase(logbookRepository)
     const logs = await handler.execute()
     console.log("Logbook :", logs)
