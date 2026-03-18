@@ -4,7 +4,7 @@ import type { Logbook } from "../models/logbook.model";
 import type { LogbookRepository } from "../ports/logbook.repository";
 
 export class LogbookRepositoryImpl implements LogbookRepository {
-    private collection : Collection<Logbook> | undefined
+    private collection : Collection<Logbook> | undefined 
 
     constructor(app: FastifyInstance) {
         this.collection = app.mongo.db?.collection<Logbook>("Logbooks")

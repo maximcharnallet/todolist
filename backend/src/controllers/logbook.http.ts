@@ -13,6 +13,7 @@ export function logbookController (app: FastifyInstance) {
 
   interface JwtPayload {
     id: string;
+    name: string
   }
   app.get("/logbook", {
     onRequest: [(app as any).authenticate],
@@ -73,7 +74,8 @@ export function logbookController (app: FastifyInstance) {
       console.log("request.body :", request.body)
       console.log("request.user :", request.user)
       const user = (request.user as JwtPayload)
-      const userId = user.id
+      console.log("user JWT payload :", user)
+      const userId = user.name
       const { logbook } = request.body as { logbook: Logbook};
 
       const handler = new CreateLogUsecase(logbookRepository)

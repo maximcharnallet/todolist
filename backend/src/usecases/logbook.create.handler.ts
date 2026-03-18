@@ -14,6 +14,7 @@ export class CreateLogUsecase {
         // type: 'accident' | 'soin' | 'observation' | 'logistique' | 'urgence', 
         // severity: 'low' | 'medium' | 'high' | 'critical' ,
     ) {
+
         const log: Logbook = {
             userId : userId,
             description: description,
