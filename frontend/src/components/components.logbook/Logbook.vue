@@ -30,10 +30,10 @@
 </script>
 
 <template>
-  <v-container fluid>
+  <v-container>
     <h1 class="text-center pb-8">Main courante</h1>
     <v-btn
-      text="Modifier"
+      class="mb-6"
       variant="tonal"
       @click="openNewEntryDialog()"
     > Nouvelle entrée

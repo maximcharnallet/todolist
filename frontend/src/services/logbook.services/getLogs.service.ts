@@ -5,7 +5,6 @@ export async function fetchLogbook () {
   })
   if (res.ok) {
     const data = await res.json()
-    console.log('data, getlogbook :', data)
     return data
   }
 }

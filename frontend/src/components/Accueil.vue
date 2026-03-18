@@ -30,7 +30,7 @@
           </v-btn>
         </template>
       </v-app-bar>
-      <v-navigation-drawer>
+      <v-navigation-drawer permanent width="160">
         <v-list nav>
           <v-list-item link title="Tâches" to="/accueil/task" />
           <v-list-item link title="Main courante" to="/accueil/logbook" />

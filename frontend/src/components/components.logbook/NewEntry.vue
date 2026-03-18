@@ -39,7 +39,9 @@
           :items="['Bas', 'Moyen', 'Haut', 'Critique']"
           label="Niveau de gravité"
         /> -->
-        <v-btn block class="mt-4" color="primary" @click="handleAddLog">Envoyer</v-btn>
+        <div class="d-flex justify-center mt-4">
+          <v-btn color="primary" @click="handleAddLog">Envoyer</v-btn>
+        </div>
       </v-form>
     </v-card>
   </v-dialog>
