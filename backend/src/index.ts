@@ -78,6 +78,7 @@ const start = async () => {
     await app.ready();
     await app.listen({ port: 3001, host: '0.0.0.0' });
     console.log(`Serveur prêt sur http://localhost:3001`);
+    console.log(`Documentation API sur http://localhost:3001/docs`)
   } catch (err) {
     app.log.error(err);
     process.exit(1);
