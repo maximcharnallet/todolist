@@ -1,7 +1,15 @@
 <script setup lang="ts">
+  import { jwtDecode } from 'jwt-decode'
   import { storeToRefs } from 'pinia'
-  import { onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
   import { logbookStore } from '@/store/logbook.store'
+
+  const userName = ref('')
+  const token = localStorage.getItem('user_token')
+  if (token) {
+    const decoded: any = jwtDecode(token)
+    userName.value = decoded.name
+  }
 
   const store = logbookStore()
 
@@ -10,24 +18,12 @@
   async function handleAddLog () {
     const dateTime = new Date(`${newLog.value.date}T${newLog.value.time}`)
     await store.doAddLog({
-      userId: newLog.value.userId,
-      type: newLog.value.type,
       description: newLog.value.description,
-      severity: newLog.value.severity,
       date: dateTime.toISOString(),
+      // severity: newLog.value.severity,
+      // type: newLog.value.type,
     })
   }
-
-  const severityColor: Record<string, string> = {
-    Bas: 'green',
-    Moyen: 'orange',
-    Haut: 'red',
-    Critique: 'purple',
-  }
-
-  const rules = [
-    (value: any) => !!value || 'Ce champ est requis.',
-  ]
 
   onMounted(() => {
     store.doGetLog()
@@ -44,22 +40,21 @@
         <v-card class="pa-4" elevation="2">
           <v-card-title>Nouvelle entrée</v-card-title>
           <v-form>
-            <v-text-field v-model="newLog.userId" label="Utilisateur" :rules="rules" />
-            <v-select
-              v-model="newLog.type"
-              :items="['Accident', 'Soin', 'Observation', 'Logistique', 'Urgence']"
-              label="Type d'incident"
-            />
             <v-textarea v-model="newLog.description" label="Description" rows="3" />
-            <v-select
-              v-model="newLog.severity"
-              :items="['Bas', 'Moyen', 'Haut', 'Critique']"
-              label="Niveau de gravité"
-            />
             <div class="d-flex ga-2">
               <v-text-field v-model="newLog.date" label="Date" type="date" />
               <v-text-field v-model="newLog.time" label="Heure" type="time" />
             </div>
+            <!-- <v-select
+              v-model="newLog.type"
+              :items="['Accident', 'Soin', 'Observation', 'Logistique', 'Urgence']"
+              label="Type d'incident"
+            /> -->
+            <!-- <v-select
+              v-model="newLog.severity"
+              :items="['Bas', 'Moyen', 'Haut', 'Critique']"
+              label="Niveau de gravité"
+            /> -->
             <v-btn block class="mt-4" color="primary" @click="handleAddLog">Envoyer</v-btn>
           </v-form>
         </v-card>
@@ -72,7 +67,7 @@
             <v-timeline-item
               v-for="log in logbook"
               :key="log.date"
-              :dot-color="severityColor[log.severity] ?? 'grey'"
+              :dot-color="'info'"
               size="small"
             >
               <template #opposite>
@@ -82,8 +77,9 @@
               </template>
               <v-card class="elevation-1">
                 <v-card-title class="text-subtitle-1">
-                  {{ log.type }} — <small>{{ log.userId }}</small>
+                  <small>{{ userName }}</small>
                 </v-card-title>
+
                 <v-card-text class="text-body-2">
                   {{ log.description }}
                 </v-card-text>

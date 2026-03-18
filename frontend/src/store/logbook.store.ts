@@ -5,11 +5,11 @@ import { fetchLogbook } from '@/services/logbook.services/getLogs.service'
 
 export const logbookStore = defineStore('logbook', () => {
   const logbook = ref<{
-    userId: string
-    type: string
     description: string
-    severity: string
     date: string
+    // type: string
+    // severity: string
+
   }[]>([])
   const isLoading = ref(false)
   const isError = ref(false)
@@ -29,29 +29,26 @@ export const logbookStore = defineStore('logbook', () => {
     }
   }
   const newLog = ref({
-    userId: '',
-    type: '',
     description: '',
-    severity: '',
     date: '',
     time: '',
+    // type: '',
+    // severity: '',
   })
 
   async function doAddLog (entry: {
-    userId: string
-    type: string
     description: string
-    severity: string
     date: string
+    // type: string
+    // severity: string
   }) {
     try {
       await addLog(entry)
       logbook.value.push({
-        userId: entry.userId,
-        type: entry.type,
         description: entry.description,
-        severity: entry.severity,
         date: entry.date,
+        // type: entry.type,
+        // severity: entry.severity,
       })
       await doGetLog()
     } catch {
