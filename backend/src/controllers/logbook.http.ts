@@ -49,7 +49,7 @@ export function logbookController (app: FastifyInstance) {
         required: ['logbook'],
         properties: {
           logbook: {
-            type:'objet',
+            type:'object',
             required: ['description', 'date'],
             properties: {
             description: { type: 'string' },
