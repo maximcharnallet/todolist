@@ -31,7 +31,7 @@
 
 <template>
   <v-container>
-    <h1 class="text-center pb-8">Main courante</h1>
+    <h1 class="text-center pb-8">Consigne</h1>
     <v-btn
       class="mb-6"
       variant="tonal"
@@ -54,7 +54,7 @@
           </template>
           <v-card class="elevation-1">
             <v-card-title class="text-subtitle-1">
-              <small>{{ log.userId }}</small>
+              <small>{{ log.user.name }}</small>
             </v-card-title>
 
             <v-card-text class="text-body-2">

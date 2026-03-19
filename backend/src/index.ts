@@ -11,6 +11,7 @@ import { logbookController } from './controllers/logbook.http';
 
 const app = fastify({ logger: true });
 
+// Swager OpenAPI
 app.register(swagger, {
   openapi: {
     openapi: '3.0.0',
@@ -39,11 +40,15 @@ app.register(swaggerUi, {
   }
 });
 
+
+// Mongodb 
 app.register(mongodb, {
   forceClose: true,
   url: "mongodb://localhost:27017/todolist" 
 });
 
+
+// Token Jwt
 app.register(fastifyJwt, {
   secret: 'secret'
 });
@@ -51,7 +56,6 @@ app.register(fastifyJwt, {
 app.register(cors, {
   origin: true
 });
-
 
 app.decorate("authenticate", async (req: any, reply: any) => {
   try {
@@ -62,6 +66,8 @@ app.decorate("authenticate", async (req: any, reply: any) => {
   }
 });
 
+
+// Controller
 app.register(fp(async (instance) => {
   registerAuthController(instance)
   taskController(instance)

@@ -5,7 +5,7 @@ export async function addLog (logbook: {
   // severity: string
 }) {
   const token = localStorage.getItem('user_token')
-  const res = await fetch ('/api/logbook', {
+  const res = await fetch ('/api/logbook/summary', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -5,9 +5,13 @@ import { fetchLogbook } from '@/services/logbook.services/getLogs.service'
 
 export const logbookStore = defineStore('logbook', () => {
   const logbook = ref<{
-    userId: string
     description: string
     date: string
+    user: {
+      id: string
+      name: string
+    }
+
     // type: string
     // severity: string
   }[]>([])

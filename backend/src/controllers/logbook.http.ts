@@ -15,7 +15,8 @@ export function logbookController (app: FastifyInstance) {
     id: string;
     name: string
   }
-  app.get("/logbook", {
+
+  app.get("/logbook/summary", {
     onRequest: [(app as any).authenticate],
     schema: {
       tags: ['Logbook'],
@@ -30,16 +31,16 @@ export function logbookController (app: FastifyInstance) {
         }
       }
     }
-  }, async () => {
+  }, async (request, reply) => {
     const handler = new GetLogUsecase(logbookRepository)
-    const logs = await handler.execute()
-    console.log("Logbook :", logs)
-    return { success: true, Logbook: logs}
+    const logbooks = await handler.execute()
+    console.log("Logbook :", logbooks)
+    return { success: true, Logbook: logbooks}
 
   })
 
 
-  app.post("/logbook", {
+  app.post("/logbook/summary", {
     onRequest: [(app as any).authenticate],
     schema: {
       tags: ['Logbook'],
@@ -81,7 +82,7 @@ export function logbookController (app: FastifyInstance) {
       let newLog
       const user = (request.user as JwtPayload)
       console.log("user JWT payload :", user)
-      const userId = user.name
+      const userId = user.id
       const { logbook } = request.body as { logbook: Logbook};
       const handler = new CreateLogUsecase(logbookRepository)
       

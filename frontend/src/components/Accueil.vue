@@ -2,7 +2,6 @@
   import { jwtDecode } from 'jwt-decode'
   import { ref } from 'vue'
   import { useLogout } from '@/composables/useLogout'
-  import Task from './components.task/Task.vue'
 
   const userName = ref('')
 
@@ -30,10 +29,10 @@
           </v-btn>
         </template>
       </v-app-bar>
-      <v-navigation-drawer permanent width="160">
+      <v-navigation-drawer permanent>
         <v-list nav>
           <v-list-item link title="Tâches" to="/accueil/task" />
-          <v-list-item link title="Main courante" to="/accueil/logbook" />
+          <v-list-item link title="Consignes" to="/accueil/logbook" />
         </v-list>
       </v-navigation-drawer>
       <v-main>

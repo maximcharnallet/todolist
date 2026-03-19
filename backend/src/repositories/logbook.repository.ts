@@ -19,11 +19,35 @@ export class LogbookRepositoryImpl implements LogbookRepository {
         return result.insertedId;
     }
 
-    public async getLogs(): Promise<Logbook[]> {
+    public async getLogs(): Promise<any[]> {
         if (!this.collection) throw new Error("Base de données non connectée");
-        return await this.collection
-            .find()
-            .sort({ date: -1 }) 
-            .toArray() as Logbook[];
-    }
-} 
+
+        return await this.collection.aggregate([
+          {
+            $addFields: {
+                user_oid: { $toObjectId: "$userId" }
+            }
+          },
+          {
+            $lookup: {
+              from: "users",           
+              localField: "user_oid",     
+              foreignField: "_id",      
+              as: "userDetails"         
+              }
+          },
+          { $unwind: "$userDetails" },      
+          {
+            $project: {                   
+                _id: 1,
+                description: 1,
+                date: 1,
+                user: {
+                    id: "$userDetails._id",
+                    name: "$userDetails.name"
+                }
+              }
+        },
+        { $sort: { date: -1 } }
+    ]).toArray();    
+}} 

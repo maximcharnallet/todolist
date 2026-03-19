@@ -17,7 +17,7 @@ export class UserRepository {
 
     public async getUser(
         name: string,
-    ): Promise<(User & { _id:  ObjectId }) | null> {
+    ): Promise<(User) | null> {
         const existingUser = await this.collection?.findOne({
             name:name,
         })
