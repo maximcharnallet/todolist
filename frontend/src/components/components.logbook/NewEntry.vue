@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
+  import { computed } from 'vue'
   import { logbookStore } from '@/store/logbook.store'
 
   const store = logbookStore()
@@ -7,8 +8,18 @@
 
   const isActive = defineModel<boolean>()
 
+  const currentDate = computed({
+    get: () => newLog.value.date || new Date().toISOString().slice(0, 10),
+    set: val => newLog.value.date = val,
+  })
+
+  const currentTime = computed({
+    get: () => newLog.value.time || new Date().toTimeString().slice(0, 5),
+    set: val => newLog.value.time = val,
+  })
+
   async function handleAddLog () {
-    const dateTime = new Date(`${newLog.value.date}T${newLog.value.time}`)
+    const dateTime = new Date(`${currentDate.value}T${currentTime.value}`)
     await store.doAddLog({
       description: newLog.value.description,
       date: dateTime.toISOString(),
@@ -26,8 +37,17 @@
       <v-form>
         <v-textarea v-model="newLog.description" label="Description" rows="3" />
         <div class="d-flex ga-2">
-          <v-text-field v-model="newLog.date" label="Date" type="date" />
-          <v-text-field v-model="newLog.time" label="Heure" type="time" />
+          <v-text-field
+            v-model="currentDate"
+            label="Date"
+            type="date"
+          />
+          <v-text-field
+            v-model="currentTime"
+            label="Heure"
+            step="60"
+            type="time"
+          />
         </div>
         <!-- <v-select
           v-model="newLog.type"

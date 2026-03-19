@@ -31,7 +31,7 @@
 
 <template>
   <v-container>
-    <h1 class="text-center pb-8">Consigne</h1>
+    <h1 class="text-center pb-8">Consignes</h1>
     <v-btn
       class="mb-6"
       variant="tonal"
@@ -49,8 +49,7 @@
         >
           <template #opposite>
             <span class="text-caption font-weight-bold">
-              {{ new Date(log.date).toLocaleString('fr-FR') }}
-            </span>
+              {{ new Date(log.date).toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }}            </span>
           </template>
           <v-card class="elevation-1">
             <v-card-title class="text-subtitle-1">
