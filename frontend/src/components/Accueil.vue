@@ -32,7 +32,7 @@
       <v-navigation-drawer permanent>
         <v-list nav>
           <v-list-item link title="Tâches" to="/accueil/task" />
-          <v-list-item link title="Consignes" to="/accueil/logbook" />
+          <v-list-item link title="Journal" to="/accueil/logbook" />
         </v-list>
       </v-navigation-drawer>
       <v-main>
