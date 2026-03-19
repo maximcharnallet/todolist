@@ -110,3 +110,13 @@
     />
   </v-container>
 </template>
+<style scoped>
+  :deep(.v-table tbody tr) {
+    transition: background-color 0.2s ease;
+  }
+
+  :deep(.v-table tbody tr:hover) {
+    background-color: rgba(var(--v-theme-info), 0.08);
+    /* cursor: pointer; */
+  }
+</style>
