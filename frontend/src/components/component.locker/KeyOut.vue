@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
-  import { allUsers, type UserResponse } from '@/services/auth.services/users.service'
+  import { useFetchUsers } from '@/composables/useFetchUsers'
   import { lockerStore } from '@/store/locker.store'
 
-  const users = ref<UserResponse[]>([])
-  const isLoading = ref(false)
+  const { isError, isLoading, users, doFetchUsers } = useFetchUsers()
 
   const store = lockerStore()
   const currentDate = ref(new Date().toISOString().slice(0, 10))
@@ -18,18 +17,8 @@
 
   const isActive = defineModel<boolean>()
 
-  async function fetchUsers () {
-    try {
-      isLoading.value = true
-      users.value = await allUsers()
-    } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error)
-    } finally {
-      isLoading.value = false
-    }
-  }
   onMounted(() => {
-    fetchUsers()
+    doFetchUsers()
   })
 
   async function handleAddKeyOut () {
@@ -76,7 +65,7 @@
           />
         </div>
         <div class="d-flex justify-center mt-4">
-          <v-btn color="primary" @click="handleAddKeyOut">Envoyer</v-btn>
+          <v-btn color="primary" @click="handleAddKeyOut">Enregistrer</v-btn>
           <v-btn variant="text" @click="isActive = false">Annuler</v-btn>
         </div>
       </v-form>
