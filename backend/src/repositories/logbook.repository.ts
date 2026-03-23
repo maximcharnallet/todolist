@@ -1,7 +1,7 @@
-import type { FastifyInstance } from "fastify";
-import { Collection } from "mongodb"; 
-import type { Logbook } from "../models/logbook.model";
-import type { LogbookRepository } from "../ports/logbook.repository";
+import type { FastifyInstance } from "fastify"
+import { Collection } from "mongodb"
+import type { Logbook } from "../models/logbook.model"
+import type { LogbookRepository } from "../ports/logbook.repository"
 
 export class LogbookRepositoryImpl implements LogbookRepository {
     private collection : Collection<Logbook> | undefined 
@@ -15,7 +15,7 @@ export class LogbookRepositoryImpl implements LogbookRepository {
         const result = await this.collection.insertOne({
             ...logbook,
             date: new Date(logbook.date) 
-        });
+        })
         return result.insertedId;
     }
 

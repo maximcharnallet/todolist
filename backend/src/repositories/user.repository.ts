@@ -1,7 +1,7 @@
-import type { FastifyInstance } from "fastify";
-import type { User } from "../models/user.model";
-import type { ObjectId } from "@fastify/mongodb";
-import { Collection } from "mongodb";
+import type { FastifyInstance } from "fastify"
+import type { User } from "../models/user.model"
+import type { ObjectId } from "@fastify/mongodb"
+import { Collection } from "mongodb"
 
 export class UserRepository {
     private collection: Collection<User> | undefined
@@ -24,4 +24,9 @@ export class UserRepository {
         if (existingUser) return existingUser
         return null
     }
+
+    public async getAllUsers(): Promise<User[]> {
+        const users = await this.collection?.find({}, { projection: { password: 0 } }).toArray()
+        return users || []
+}
 }

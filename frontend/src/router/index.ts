@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Accueil from '@/components/Accueil.vue'
+import Locker from '@/components/component.locker/Locker.vue'
 import Login from '@/components/components.auth/Login.vue'
 import Register from '@/components/components.auth/Register.vue'
 import Logbook from '@/components/components.logbook/Logbook.vue'
@@ -30,6 +31,10 @@ const routes = [
       {
         path: 'logbook',
         component: Logbook,
+      },
+      {
+        path: 'locker',
+        component: Locker,
       },
 
     ],

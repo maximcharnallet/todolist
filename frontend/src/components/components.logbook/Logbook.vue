@@ -117,6 +117,6 @@
 
   :deep(.v-table tbody tr:hover) {
     background-color: rgba(var(--v-theme-info), 0.08);
-    /* cursor: pointer; */
+    cursor: pointer;
   }
 </style>

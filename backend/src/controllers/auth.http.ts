@@ -128,4 +128,26 @@ export function registerAuthController(app: FastifyInstance) {
             }
         }
     })
+    app.get("/users", {
+      onRequest: [(app as any).authenticate],
+      schema: {
+          tags: ['Users'],
+          response: {
+              200: {
+                  type: 'array',
+                  items: {
+                      type: 'object',
+                      properties: {
+                          _id: { type: 'string' },
+                          name: { type: 'string' },
+                      }
+                  }
+              }
+          }
+      }
+  }, async (req, reply) => {
+      const users = await userRepository.getAllUsers();
+      return users;
+     
+  })
 }
