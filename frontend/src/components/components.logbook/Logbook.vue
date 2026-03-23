@@ -58,7 +58,7 @@
           <v-timeline-item
             v-for="log in logbook"
             :key="log.date"
-            :dot-color="'info'"
+            :dot-color="log.isImportant ? 'error' : 'info'"
             size="small"
           >
             <template #opposite>
@@ -96,6 +96,7 @@
             <tr
               v-for="log in logbook"
               :key="log.date"
+              :class="{ 'important-row': log.isImportant }"
             >
               <td>{{ new Date(log.date).toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }}</td>
               <td>{{ log.description }}</td>
@@ -118,5 +119,18 @@
   :deep(.v-table tbody tr:hover) {
     background-color: rgba(var(--v-theme-info), 0.08);
     cursor: pointer;
+  }
+
+  .important-row {
+    background-color: rgba(var(--v-theme-error), 0.1) !important;
+    color: rgb(var(--v-theme-error)) !important;
+  }
+
+  .important-row:hover {
+    background-color: rgba(var(--v-theme-error), 0.2) !important;
+  }
+
+  :deep(.v-table tbody tr) {
+    transition: background-color 0.2s ease;
   }
 </style>

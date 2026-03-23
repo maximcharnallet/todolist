@@ -11,16 +11,14 @@ export class CreateLogUsecase {
         userId: string, 
         description: string, 
         date: Date,
-        // type: 'accident' | 'soin' | 'observation' | 'logistique' | 'urgence', 
-        // severity: 'low' | 'medium' | 'high' | 'critical' ,
+        isImportant: boolean
     ) {
 
         const log: Logbook = {
             userId : userId,
             description: description,
-            date: date
-            // type : type,
-            // severity: severity,
+            date: date,
+            isImportant: isImportant,
         }
         const result = await this.logbookRepository.createLog(log)
 

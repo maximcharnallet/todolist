@@ -45,7 +45,8 @@ export class LogbookRepositoryImpl implements LogbookRepository {
                 user: {
                     id: "$userDetails._id",
                     name: "$userDetails.name"
-                }
+                },
+                isImportant: 1,
               }
         },
         { $sort: { date: -1 } }

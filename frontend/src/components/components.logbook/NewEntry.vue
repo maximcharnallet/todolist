@@ -23,8 +23,7 @@
     await store.doAddLog({
       description: newLog.value.description,
       date: dateTime.toISOString(),
-      // severity: newLog.value.severity,
-      // type: newLog.value.type,
+      isImportant: newLog.value.isImportant,
     })
     isActive.value = false
   }
@@ -48,17 +47,13 @@
             step="60"
             type="time"
           />
+          <v-checkbox
+            v-model="newLog.isImportant"
+            color="warning"
+            hide-details
+            label="Important"
+          />
         </div>
-        <!-- <v-select
-          v-model="newLog.type"
-          :items="['Accident', 'Soin', 'Observation', 'Logistique', 'Urgence']"
-          label="Type d'incident"
-        /> -->
-        <!-- <v-select
-          v-model="newLog.severity"
-          :items="['Bas', 'Moyen', 'Haut', 'Critique']"
-          label="Niveau de gravité"
-        /> -->
         <div class="d-flex justify-center mt-4">
           <v-btn color="primary" @click="handleAddLog">Envoyer</v-btn>
         </div>

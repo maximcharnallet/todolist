@@ -11,6 +11,7 @@ export const logbookStore = defineStore('logbook', () => {
       id: string
       name: string
     }
+    isImportant: boolean
 
     // type: string
     // severity: string
@@ -19,6 +20,7 @@ export const logbookStore = defineStore('logbook', () => {
     description: '',
     date: '',
     time: '',
+    isImportant: false,
     // type: '',
     // severity: '',
   })
@@ -44,8 +46,7 @@ export const logbookStore = defineStore('logbook', () => {
   async function doAddLog (entry: {
     description: string
     date: string
-    // type: string
-    // severity: string
+    isImportant: boolean
   }) {
     try {
       await addLog(entry)
@@ -54,8 +55,7 @@ export const logbookStore = defineStore('logbook', () => {
         description: '',
         date: '',
         time: '',
-        // type: '',
-        // severity: '',
+        isImportant: false,
       }
     } catch {
       isError.value = true

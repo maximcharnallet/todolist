@@ -51,10 +51,11 @@ export function logbookController (app: FastifyInstance) {
         properties: {
           logbook: {
             type:'object',
-            required: ['description', 'date'],
+            required: ['description', 'date', 'isImportant'],
             properties: {
             description: { type: 'string' },
-            date: { type: 'string', format: 'date-time' } 
+            date: { type: 'string', format: 'date-time' },
+            isImportant: { type: 'boolean'}
             }
           }
         }
@@ -87,7 +88,7 @@ export function logbookController (app: FastifyInstance) {
       const handler = new CreateLogUsecase(logbookRepository)
       
       try {
-          newLog = await handler.execute(userId, logbook.description, logbook.date)
+          newLog = await handler.execute(userId, logbook.description, logbook.date, logbook.isImportant)
           return { success: true, newLog }
       } catch (e) {
           if (e instanceof ConflictError){
