@@ -2,8 +2,11 @@
   import { jwtDecode } from 'jwt-decode'
   import { storeToRefs } from 'pinia'
   import { onMounted, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { logbookStore } from '@/store/logbook.store'
   import NewEntry from './NewEntry.vue'
+
+  const { t } = useI18n()
 
   const userName = ref('')
   const token = localStorage.getItem('user_token')
@@ -32,13 +35,13 @@
 
 <template>
   <v-container>
-    <h1 class="text-center pb-8">Journal</h1>
+    <h1 class="text-center pb-8">{{ t('logbook') }}</h1>
     <div class="d-flex align-center mb-6 gap-3">
       <v-btn
         class="mb-6"
         variant="tonal"
         @click="openNewEntryDialog()"
-      > Nouvelle entrée
+      >{{ t('new_entry') }}
       </v-btn>
       <v-btn-toggle
         v-model="viewMode"
@@ -52,7 +55,7 @@
       </v-btn-toggle>
     </div>
     <v-card class="pa-4" elevation="2">
-      <h3 class="mb-4 ml-4">Historique récent</h3>
+      <h3 class="mb-4 ml-4">{{ t('recent_history') }}</h3>
       <template v-if="viewMode === 'timeline'">
         <v-timeline align="start" side="end">
           <v-timeline-item
@@ -82,13 +85,13 @@
           <thead>
             <tr>
               <th class="text-left">
-                Date / Heure
+                {{ t('date_time') }}
               </th>
               <th class="text-left">
-                Libellé de l'événement
+                {{ t('event') }}
               </th>
               <th class="text-left">
-                Nom
+                {{ t('name') }}
               </th>
             </tr>
           </thead>

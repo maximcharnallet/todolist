@@ -1,9 +1,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
   import { ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { lockerStore } from '@/store/locker.store'
   import KeyIn from './KeyIn.vue'
   import KeyOut from './KeyOut.vue'
+
+  const { t } = useI18n()
 
   const store = lockerStore()
   const { keyOutLocker, errorMessage } = storeToRefs(store)
@@ -35,32 +38,32 @@
       {{ store.errorMessage }}
     </v-alert>
     <div class="d-flex align-center mb-6 gap-3">
-      <v-btn class="mb-6" variant="tonal" @click="openKeyOutDialog()">Prise des clés</v-btn>
-      <v-btn class="mb-6 ml-auto" variant="tonal" @click="openKeyInDialog()">Dépôt des clés</v-btn>
+      <v-btn class="mb-6" variant="tonal" @click="openKeyOutDialog()">{{ t('keyOut') }}</v-btn>
+      <v-btn class="mb-6 ml-auto" variant="tonal" @click="openKeyInDialog()">{{ t('keyIn') }}</v-btn>
     </div>
     <v-table>
       <thead>
         <tr>
           <th class="text-left">
-            N° Appart.
+            {{ t('nb_appart') }}
           </th>
           <th class="text-left">
-            Prise clés - Date/Heure
+            {{ t('keyOut') }} - {{ t('date_time') }}
           </th>
           <th class="text-left">
-            Prise clés - Qui
+            {{ t('keyOut') }} - {{ t('who') }}
           </th>
           <th class="text-left">
-            Prise clés - Approuvé par
+            {{ t('keyOut') }} - {{ t('approuved') }}
           </th>
           <th class="text-left">
-            Dépôt clés - Date/Heure
+            {{ t('keyIn') }} - {{ t('date_time') }}
           </th>
           <th class="text-left">
-            Dépôt clés - Qui
+            {{ t('keyIn') }} - {{ t('who') }}
           </th>
           <th class="text-left">
-            Dépôt clés - Approuvé par
+            {{ t('keyIn') }} - {{ t('approuved') }}
           </th>
         </tr>
       </thead>

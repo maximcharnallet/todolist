@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { useSignin } from '@/composables/useSignin'
 
+  const { t } = useI18n()
   const name = ref('')
   const password = ref('')
   const visible = ref(false)
@@ -17,6 +19,11 @@
 </script>
 
 <template>
+  <div class="locale-changer">
+    <select v-model="$i18n.locale">
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+    </select>
+  </div>
   <div>
     <v-card
       class="mx-auto mt-12 pa-12 pb-8"
@@ -24,9 +31,9 @@
       max-width="448"
       rounded="lg"
     >
-      <div class="text-body-large font-weight-bold text-medium-emphasis text-center">Se connecter</div>
+      <div class="text-body-large font-weight-bold text-medium-emphasis text-center">{{ t('login') }}</div>
 
-      <div class="text-body-large text-medium-emphasis">Nom</div>
+      <div class="text-body-large text-medium-emphasis">{{ t('name') }}</div>
 
       <v-text-field
         v-model="name"
@@ -36,7 +43,7 @@
       />
 
       <div class="text-body-large text-medium-emphasis d-flex align-center justify-space-between">
-        Mot de passe
+        {{ t('password') }}
       </div>
 
       <v-text-field
@@ -57,7 +64,7 @@
         variant="tonal"
         @click="handleSignin()"
       >
-        Connexion
+        {{ t('submit') }}
       </v-btn>
 
       <v-alert v-if="isError" class="mb-4" type="error" variant="tonal">
@@ -69,7 +76,7 @@
           class="text-blue text-decoration-none"
           href="/register"
         >
-          S'enregister <v-icon icon="mdi-chevron-right" />
+          {{ t('register') }}<v-icon icon="mdi-chevron-right" />
         </a>
       </v-card-text>
     </v-card>
